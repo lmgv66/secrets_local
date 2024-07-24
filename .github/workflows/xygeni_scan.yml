@@ -123,7 +123,7 @@ jobs:
           echo github.repository ${{ github.repository }}
 
           if [ "${{ github.head_ref }}" != "" ]; then
-            export XY_PRJ_NAME=$(XY_PRJ_NAME)_pr_to_${{ github.head_ref }}
+            export XY_PRJ_NAME=${XY_PRJ_NAME}_pr_to_${{ github.head_ref }}
           fi
           echo XY_PRJ_NAME $XY_PRJ_NAME
           exit 1
