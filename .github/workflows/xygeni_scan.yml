@@ -128,9 +128,9 @@ jobs:
           echo from : $from
 
           if [ "${{ github.event.pull_request.head.repo.full_name }}" == "${{ github.repository }}" ]; then
-            echo Iguales vienen de una PR interna
-          else
             echo Distintos viene de un fork
+          else
+            echo Iguales vienen de una PR interna
           fi 
 
           if [ "${{ github.head_ref }}" != "" ]; then
