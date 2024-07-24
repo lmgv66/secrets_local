@@ -119,6 +119,9 @@ jobs:
           echo GITHUB_REF : ${GITHUB_REF}
           echo github.ref ${{ github.ref }}
           echo github.head_ref ${{ github.head_ref }}
+          echo GITHUB_REPOSITORY ${GITHUB_REPOSITORY}
+          echo github.repository ${{ github.repository }}
+
           exit 1
 
           if [ "$INCLUDE_GIT_HISTORY" == "" ]; then
