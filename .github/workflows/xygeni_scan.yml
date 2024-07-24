@@ -122,6 +122,11 @@ jobs:
           echo GITHUB_REPOSITORY ${GITHUB_REPOSITORY}
           echo github.repository ${{ github.repository }}
 
+          to=$(echo "${{ github.ref }}" | cut -d "/" -f 3)
+          from=${{ github.head_ref }}
+          echo to : $to
+          echo from : $from
+
           if [ "${{ github.head_ref }}" != "" ]; then
             export XY_PRJ_NAME=${XY_PRJ_NAME}_pr_to_${{ github.head_ref }}
           fi
