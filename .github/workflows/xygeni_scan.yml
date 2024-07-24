@@ -30,7 +30,7 @@ on:
 env:
   INCLUDE_GIT_HISTORY: ${{ github.event.inputs.secret-history }}
   XY_ENV: ${{ github.event_name == 'push' && 'PRO' || github.event.inputs.xy-env }}
-  XY_PRJ_NAME: GitHub-${{ github.event.repository.name }}_${{ github.head_ref }}
+  XY_PRJ_NAME: GitHub-${{ github.event.repository.name }}
 
 
 jobs:
@@ -122,7 +122,11 @@ jobs:
           echo GITHUB_REPOSITORY ${GITHUB_REPOSITORY}
           echo github.repository ${{ github.repository }}
 
-          
+          if [ "${{ github.head_ref }}" != "" ]; then
+            export XY_PRJ_NAME=$(XY_PRJ_NAME)_pr_to_${{ github.head_ref }}
+          fi
+          echo XY_PRJ_NAME $XY_PRJ_NAME
+          exit 1
 
           if [ "$INCLUDE_GIT_HISTORY" == "" ]; then
             export INCLUDE_GIT_HISTORY="true"
@@ -132,12 +136,12 @@ jobs:
             echo "***********************"
             echo "Executing over history"
             echo "***********************"
-            ${GITHUB_WORKSPACE}/scanner/xygeni scan --run="inventory,secrets" --secrets-mode=history --include-collaborators   -n ${{ env.XY_PRJ_NAME }}    --dir ${GITHUB_WORKSPACE} --exclude=**/scanner/**
+            ${GITHUB_WORKSPACE}/scanner/xygeni scan --run="inventory,secrets" --secrets-mode=history --include-collaborators   -n $XY_PRJ_NAME   --dir ${GITHUB_WORKSPACE} --exclude=**/scanner/**
           else
             echo "***********************"
             echo "Not including history"
             echo "***********************"
-            ${GITHUB_WORKSPACE}/scanner/xygeni scan --run="inventory,secrets"                        --include-collaborators   -n ${{ env.XY_PRJ_NAME }}    --dir ${GITHUB_WORKSPACE} --exclude=**/scanner/** \
+            ${GITHUB_WORKSPACE}/scanner/xygeni scan --run="inventory,secrets"                        --include-collaborators   -n $XY_PRJ_NAME   --dir ${GITHUB_WORKSPACE} --exclude=**/scanner/** \
               --fail-on="file:${GITHUB_WORKSPACE}/GuardRails/secrets-critical.xyflow" 
             retVal=$?
             echo retVal $retVal
@@ -159,3 +163,4 @@ jobs:
           
         env:
           GITHUB_PAT: ${{ secrets.GH_PAT }}
+          XY_PRJ_NAME: ${{ env.XY_PRJ_NAME }} 
