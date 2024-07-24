@@ -30,7 +30,7 @@ on:
 env:
   INCLUDE_GIT_HISTORY: ${{ github.event.inputs.secret-history }}
   XY_ENV: ${{ github.event_name == 'push' && 'PRO' || github.event.inputs.xy-env }}
-  XY_PRJ_NAME: GitHub-${{ github.event.repository.name }}
+  XY_PRJ_NAME: GitHub-${{ github.event.repository.name }}_${{ github.head_ref }}
 
 
 jobs:
@@ -132,12 +132,12 @@ jobs:
             echo "***********************"
             echo "Executing over history"
             echo "***********************"
-            ${GITHUB_WORKSPACE}/scanner/xygeni scan --run="inventory,secrets" --secrets-mode=history --include-collaborators   -n ${{ env.XY_PRJ_NAME }}_github_run    --dir ${GITHUB_WORKSPACE} --exclude=**/scanner/**
+            ${GITHUB_WORKSPACE}/scanner/xygeni scan --run="inventory,secrets" --secrets-mode=history --include-collaborators   -n ${{ env.XY_PRJ_NAME }}    --dir ${GITHUB_WORKSPACE} --exclude=**/scanner/**
           else
             echo "***********************"
             echo "Not including history"
             echo "***********************"
-            ${GITHUB_WORKSPACE}/scanner/xygeni scan --run="inventory,secrets"                        --include-collaborators   -n ${{ env.XY_PRJ_NAME }}_github_run    --dir ${GITHUB_WORKSPACE} --exclude=**/scanner/** \
+            ${GITHUB_WORKSPACE}/scanner/xygeni scan --run="inventory,secrets"                        --include-collaborators   -n ${{ env.XY_PRJ_NAME }}    --dir ${GITHUB_WORKSPACE} --exclude=**/scanner/** \
               --fail-on="file:${GITHUB_WORKSPACE}/GuardRails/secrets-critical.xyflow" 
             retVal=$?
             echo retVal $retVal
