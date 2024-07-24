@@ -137,7 +137,7 @@ jobs:
             fi 
           else
             echo "viene de un push"
-          if
+          fi
 
           if [ "${{ github.head_ref }}" != "" ]; then
             export XY_PRJ_NAME=${XY_PRJ_NAME}_pr_to_${{ github.head_ref }}
